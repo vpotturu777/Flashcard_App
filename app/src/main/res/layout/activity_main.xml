@@ -14,7 +14,7 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:gravity="center"
-        android:text="Who is the 43th President of the United States?"
+        android:text="Who is the 44th President of the United States?"
         android:textSize="40sp" />
 
     <TextView
