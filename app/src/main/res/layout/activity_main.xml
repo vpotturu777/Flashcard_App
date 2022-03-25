@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/flashcard_question_textview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="201dp"
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:gravity="center"
