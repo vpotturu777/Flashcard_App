@@ -1,12 +1,11 @@
 # Lab 3
 
 ### App Description
-`TODO://` Add app description
+This part of the app allows you to save the data of questions and answers in the flashcard app. 
 
 ### App Walk-though
-`TODO://` Add the URL to your animated app walk-though `gif` in the image tag below. Make sure the gif actually renders and animates when viewing this README. (☝️ Remove this paragraph after after adding gif)
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+<img src="http://g.recordit.co/nkB7fzwuMD.gif" width=200><br>
 
 ## Required
 - [x] User can create a card and still see their created card when the app is relaunched.
