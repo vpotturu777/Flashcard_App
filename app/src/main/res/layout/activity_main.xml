@@ -35,5 +35,13 @@
         android:layout_margin="20dp"
         android:src="@drawable/icon_add" />
 
+    <ImageView
+        android:id="@+id/flashcard_next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/icon_next" />
 
 </RelativeLayout>
