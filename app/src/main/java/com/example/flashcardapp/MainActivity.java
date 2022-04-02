@@ -3,9 +3,13 @@ package com.example.flashcardapp;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.flashcard_next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (allFlashcards.size() == 0)
                     return;
 
@@ -57,8 +62,40 @@ public class MainActivity extends AppCompatActivity {
                 allFlashcards = flashcardDatabase.getAllCards();
                 Flashcard flashcard = allFlashcards.get(currentCardDisplayedIndex);
 
-                ((TextView) findViewById(R.id.flashcard_question_textview)).setText(flashcard.getAnswer());
-                ((TextView) findViewById(R.id.flashcard_answer_textview)).setText(flashcard.getQuestion());
+                flashcardQuestion.setText(flashcard.getQuestion());
+                flashcardQuestion.setText(flashcard.getAnswer());
+
+                flashcardQuestion.setVisibility(View.VISIBLE);
+                flashcardAnswer.setVisibility(View.INVISIBLE);
+
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_out);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.right_in);
+
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        findViewById(R.id.flashcard_question_textview).startAnimation(rightInAnim);
+                        Flashcard flashcard = allFlashcards.get(currentCardDisplayedIndex);
+
+                        flashcardQuestion.setText(flashcard.getQuestion());
+                        flashcardQuestion.setText(flashcard.getAnswer());
+
+                        flashcardQuestion.setVisibility(View.VISIBLE);
+                        flashcardAnswer.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
+
+                flashcardQuestion.startAnimation(leftOutAnim);
             }
         });
 
@@ -68,6 +105,23 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.flashcard_question_textview)).setVisibility(View.INVISIBLE);
                 ((TextView) findViewById(R.id.flashcard_answer_textview)).setVisibility(View.VISIBLE);
                 Toast.makeText(MainActivity.this, "I CLICKED THIS!", Toast.LENGTH_LONG).show();
+
+                // get the center for the clipping circle
+                int cx = flashcardAnswer.getWidth() / 2;
+                int cy = flashcardAnswer.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(flashcardAnswer, cx, cy, 0f, finalRadius);
+
+                // hide the question and show the answer to prepare for playing the animation!
+                flashcardQuestion.setVisibility(View.INVISIBLE);
+                flashcardAnswer.setVisibility(View.VISIBLE);
+
+                anim.setDuration(3000);
+                anim.start();
             }
         });
 
@@ -76,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }
